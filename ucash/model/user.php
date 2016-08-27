@@ -3,11 +3,11 @@
 namespace Model;
 class User extends base {
 	
-	public $user_id = "";
+	public $id;
 
-	public $username = "";
-	
-	public $table = "user";
+	public $username;
+
+	public $table = "uhmnl_users";
 
 	public function __construct(){
 		parent::__construct();
@@ -24,12 +24,13 @@ class UserDAO extends baseDAO{
 	public function checklogin( $username, $password ){
 		return $this->select()
 				   ->where('username', $username)
-				   ->where('passowrd', $password)
+				   ->where('password', $password)
 				   ->grab(new User);
 
 	}
 
 	public function getByUsername($username){
+
 		$result = $this->select()
 				->where('username',$username)
 				->grab(new User);

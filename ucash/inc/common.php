@@ -6,31 +6,33 @@ use Config\Config;
 
 class Sanitizer {
 
-	public function sanitize_get(){
-		$_GET = filter_var_array($_GET,FILTER_SANITIZE_STRING);
+	public static function sanitize_get(){
+		$_GET = array_map('trim',filter_var_array($_GET,FILTER_SANITIZE_STRING));
 	}
 
-	public function sanitize_post(){
-		$_POST = filter_var_array($_POST,FILTER_SANITIZE_STRING);
+	public static function sanitize_post(){
+		$_POST = array_map('trim',filter_var_array($_POST,FILTER_SANITIZE_STRING));
 	}
 
-	public function sanitize_session(){
-		$_SESSION = filter_var_array($_SESSION,FILTER_SANITIZE_STRING);
+	public static function sanitize_session(){
+		$_SESSION = array_map('trim',filter_var_array($_SESSION,FILTER_SANITIZE_STRING));
 	}
 
-	public function sanitize_all(){
-		$_SESSION = filter_var_array($_SESSION,FILTER_SANITIZE_STRING);
-		$_GET = filter_var_array($_GET,FILTER_SANITIZE_STRING);
-		$_POST = filter_var_array($_POST,FILTER_SANITIZE_STRING);
+	public static function sanitize_all(){
+		$_SESSION = array_map('trim',filter_var_array($_SESSION,FILTER_SANITIZE_STRING));
+		$_GET = array_map('trim',filter_var_array($_GET,FILTER_SANITIZE_STRING));
+		$_POST = array_map('trim',filter_var_array($_POST,FILTER_SANITIZE_STRING));
 	}
 
-
+	public static function sanitize_string($string){
+		return filter_var( $string, FILTER_SANITIZE_STRING );
+	}
 }
 
 
 class NonceGenerator {
 
-	public function generate(){
+	public static function generate(){
 		if(!session_id()){
 			session_start();
 		}
@@ -45,7 +47,7 @@ class NonceGenerator {
 		} 
 	} 
 
-	public function get(){
+	public static function get(){
 		if(!session_id()){
 			session_start();
 		}
@@ -53,6 +55,15 @@ class NonceGenerator {
 			NonceGenerator::generate();
 		}
 		return $_SESSION['nonce'];
+	}
+
+	public static function refresh(){
+		if(!session_id()){
+			session_start();
+		}
+		if( isset( $_SESSION['nonce'] ) ){
+		 	unset( $_SESSION['nonce'] );
+		}
 	}
 }
 

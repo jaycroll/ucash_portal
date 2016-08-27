@@ -21,22 +21,13 @@ class home extends base {
 	}
 	public function index( $vars ) {
 		session_start();
+		Nonce::refresh();
 		$config = new Config;
-		$vars['title']	= "Popcorn Framework";
+		$vars['title']	= "uCASH Portal";
 		$vars['config'] = $config;
 		$vars['frnt_flg'] = true;
+		$vars['nonce'] = Nonce::generate();
 		echo $this->load->view( 'home.index', $vars );	
 	}
-	// public function test( $vars ) {
-	// 	session_start();
-	// 	$config = new Config;
-	// 	$product = (object) [];
 
-	// 	$product->productCategory = 'High Grade';
-	// 	$product->productItemCode = 'TOY-GDM-2867';
-	// 	$product->productName = 'HG 1/144 にっぽん';
-
-	// 	echo json_encode((array)$product, JSON_UNESCAPED_UNICODE);
-	// }
 }
-?> 

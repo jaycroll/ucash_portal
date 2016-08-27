@@ -45,8 +45,10 @@ use Includes\Error;
 						extract($vars);
 					}
 					if(!isset($vars['frnt_flg'])){
+		
 						require($config->view."default.html");
 					} else{
+						
 						require($pathbuilder);
 					}
 				}

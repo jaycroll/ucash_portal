@@ -56,6 +56,7 @@ class LoanDAO extends baseDAO{
 		if ($err) {
 		  return "cURL Error #:" . $err;
 		} else {
+		  $convertedresults = array();	
 		  $response = json_decode( $response, true);
 			foreach ($reponse as $key => $result) {
 				$resultModel = get_class($model);
@@ -78,64 +79,10 @@ class LoanDAO extends baseDAO{
 				$convertedresults[]= (object) $resultArray;
 
 			}
+			return $convertedresults;
 		}
 	}
 
-	public function loanResponse( $principal, $interest, $noy ){
-
-		//do curl here;
-		$curl = curl_init();
-		$principal = $principal;//sanitize this
-		$interest = $interest;//sanitize this
-		$noy = $noy;//sanitize this
-		curl_setopt_array($curl, array(
-		  CURLOPT_URL => "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/Loans/compute?principal=REPLACE_THIS_VALUE&interest=REPLACE_THIS_VALUE&noy=REPLACE_THIS_VALUE",
-		  CURLOPT_RETURNTRANSFER => true,
-		  CURLOPT_ENCODING => "",
-		  CURLOPT_MAXREDIRS => 10,
-		  CURLOPT_TIMEOUT => 30,
-		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		  CURLOPT_CUSTOMREQUEST => "GET",
-		  CURLOPT_HTTPHEADER => array(
-		    "accept: application/json",
-		    "content-type: application/json",
-		    "x-ibm-client-id: bfac49db-0569-412d-925b-263b3e640c4c",
-		    "x-ibm-client-secret: uU0vR1hC1bT6xI3cP1jD3uI1jW6cK0nG0iS4fT6vO8mL2xL6kJ"
-		  ),
-		));
-
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
-
-		curl_close($curl);
-
-		if ($err) {
-		  return "cURL Error #:" . $err;
-		} else {
-		  $response = json_decode( $response, true);
-			foreach ($reponse as $key => $result) {
-				$resultModel = get_class($model);
-
-				$resultObject = new $resultModel;
-				foreach($result as $key => $value){
-					$resultObject->$key = $value;
-				}
-				$resultObject->table = "";
-				$resultArray = ( array ) $resultObject;
-				if($this->select !="" && $this->select !="*"){
-					foreach(  $resultArray as $key => $val){
-						if(!in_array($key, explode(",",$this->select) ) ){
-							unset($resultArray[$key]);
-						} else{
-							$resultArray[$key] = $val;
-						}
-					} 
-				}
-				$convertedresults[]= (object) $resultArray;
-
-			}
-		}
-	}
 
 }
 

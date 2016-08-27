@@ -46,6 +46,8 @@ abstract class baseDAO{
 	
 	public $count = false;
 
+	public $query;
+
 	public function closeConnection(){
 		$this->dbh = null;
 		return $this;
@@ -200,7 +202,7 @@ abstract class baseDAO{
 				
 		return $this;
 	}
-	public function save($model) {
+	public function save($model, $getlast = false) {
 		$val = array();
 		//var_dump(get_object_vars($model));
 		foreach(get_object_vars($model) as $key => $value){
@@ -217,7 +219,11 @@ abstract class baseDAO{
 		$a = $query->execute($this->values);
 		if($a){
 			$this->flush();
-			return true;
+			if( $getlast = true ){
+				return $this->dbh->lastInsertId();
+			} else{
+				return true;
+			}
 		} else{
 			$this->flush();
 			 var_dump($query->errorInfo());
@@ -262,14 +268,17 @@ abstract class baseDAO{
 		$stmt = "UPDATE ".$model->table." SET ";
 		$values = array();
 		$updatfields = array();
+
 		foreach(get_object_vars($model) as $key=>$value){
 			if($value != "" && $key !== 'table' && $key != $model->table."_id" && $key!='dbh' && $key != 'conn'){
 				$updatefields[] = $key."= ?";
+
 				$values[] = $value;
 			}
 		}
+		echo "<br/>";
 		$stmt .= " ".implode(",",$updatefields)." ";
-
+		echo "<br/>";
 		if($this->where){
 			// var_dump($this->fields[$i])."<br/>";
 			$stmt .=" WHERE ";
@@ -296,10 +305,17 @@ abstract class baseDAO{
 			}
 		}
 		// var_dump($values);
-
+		$this->dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
 		$query = $this->dbh->prepare($stmt);
+		
 		$this->flush();
-		return $query->execute($values);
+		// return $query->execute($values);
+		if (!$query->execute($values)) {
+		    echo "\nPDO::errorInfo():\n";
+		    print_r($this->dbh->errorInfo());
+		} else{
+			return true;
+		}
 	}
 
 	public function grab($model) {
@@ -364,8 +380,9 @@ abstract class baseDAO{
 		}
 		
 		$query = $this->dbh->prepare($stmt);
-
+		$this->query = $stmt;
 		$query->execute($values);
+		
 		$results = $query->fetchAll(PDO::FETCH_ASSOC);
 		$convertedresults = array();
 
@@ -391,6 +408,9 @@ abstract class baseDAO{
 
 		}
 		$this->flush();
+		if( count($convertedresults) == 1 ){
+			$convertedresults = $convertedresults[0];
+		}
 		return $convertedresults;
 	}
 
@@ -447,7 +467,7 @@ abstract class baseDAO{
 			$stmt .=" ".$this->order;
 		}
 		$query = $this->dbh->prepare($stmt);
-
+		$this->query = $stmt;
 		$query->execute($values);
 		$results = $query->fetchAll(PDO::FETCH_ASSOC);
 		$row = null;

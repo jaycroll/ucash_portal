@@ -22,6 +22,8 @@ class Config{
 	public $common_css = "";
 	public $common_img = "";
 	public $common_js = "";
+	public $common_assets = "";
+	public $common_fonts = "";
 	public $salt = "popcorn";
 	private static $rdbms = "mysql";
 	private static $host = "localhost";
@@ -40,12 +42,14 @@ class Config{
 		$this->model = $this->dir_root."/model/";
 		$this->cache = $this->dir_root."/cache/";
 		$this->temp = $this->dir_root."/temp/";
-		$this->vendor = $this->dir_root."/vendor/";
+		$this->vendor = $this->http."/vendor/";
 		$this->uploads = $this->dir_root."/uploads/";
 		$this->uploadUrl = $this->http."/uploads/";
 		$this->common_css = $this->http."common/css/";
 		$this->common_img = $this->http."common/img/";
 		$this->common_js = $this->http."common/js/";
+		$this->common_assets = $this->http."common/assets/";
+		$this->common_fonts = $this->http."common/fonts/";
 	}
 
 	public static function connectTo(){
