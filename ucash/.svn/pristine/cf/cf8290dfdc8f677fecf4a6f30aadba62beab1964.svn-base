@@ -1,0 +1,12 @@
+<?php 
+/** parser **/
+namespace Includes\Parser;
+
+class URI{
+
+	public function parseUri($uri){
+		//var_dump(explode("/",$uri));
+		return explode("/",$uri);
+	}
+}
+?>
