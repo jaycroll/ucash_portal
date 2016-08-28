@@ -6,8 +6,8 @@ namespace Config;
 class Config{
 
 
-	public $http = "http://ucash.portal/";
-	public $https = "http://ucash.portal/";
+	public $http = "http://192.168.8.101/ucash/";
+	public $https = "https://192.168.8.101/ucash/";
 	public $dir_root = "";
 	public $default = "home"; //default controller class
 	public $url = "";
@@ -36,7 +36,7 @@ class Config{
 
 	public function __construct() {
 		date_default_timezone_set("Asia/Tokyo");
-		$this->dir_root = $_SERVER['DOCUMENT_ROOT']."";
+		$this->dir_root = $_SERVER['DOCUMENT_ROOT']."/ucash";
 		$this->controller = $this->dir_root."/controller/";
 		$this->view = $this->dir_root."/view/";
 		$this->model = $this->dir_root."/model/";

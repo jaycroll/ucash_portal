@@ -22,6 +22,7 @@ class accessAuth extends base {
 	public function login( $vars ) {
 		session_start();
 		Sanitizer::sanitize_post();
+		$config = new Config;
 		extract($this->load->model('User'));
 		extract($_POST);
 		if($nonce == $_SESSION['nonce']){
@@ -30,10 +31,10 @@ class accessAuth extends base {
 			if( $user->username != null && $user->username != "" ){
 					$_SESSION['username'] = $user->username;
 					$_SESSION['account_id'] = $user->account_id;
-					header('location:'.$this->http.'/dashboard');
+					header('location:'.$config->http.'dashboard');
 			}
 		} else{
-			header('Location:/?invalid_request');
+			header('Location:'.$config->http.'/?invalid_request');
 		}
 	}
 	public function logout( $vars ){

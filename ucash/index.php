@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set( "Asia/Tokyo" );
-require_once( $_SERVER['DOCUMENT_ROOT']."/config.php" );
+require_once( $_SERVER['DOCUMENT_ROOT']."/ucash/config.php" );
 require __DIR__ . '/vendor/autoload.php';
 use Config\Config;
 $config = new Config;

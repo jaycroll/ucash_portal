@@ -38,7 +38,7 @@
         <div class="modal-dialog">
             <div class="loginmodal-container">
                 <h1>Login to Your Account</h1><br>
-              <form action="accessAuth/login" method="post">
+              <form action="<?=$config->http?>accessAuth/login" method="post">
                 <input type="text" name="user" placeholder="Username">
                 <input type="password" name="pass" placeholder="Password">
                 <input type="hidden" name="nonce" value="<?=$_SESSION['nonce']?>">
@@ -90,7 +90,7 @@
             <div class="header-content-inner">
                 <h1 id="homeHeading">UCASH</h1>
                 <hr>
-                <p>Funding for Coop/SME</p>
+                <p>Making Your Dreams  Come True</p>
                 <a href="#about" class="btn btn-primary btn-xl page-scroll">Find Out More</a>
             </div>
         </div>
