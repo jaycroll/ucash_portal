@@ -27,44 +27,8 @@ class home extends base {
 		$vars['config'] = $config;
 		$vars['frnt_flg'] = true;
 		$vars['nonce'] = Nonce::generate();
-		$vars['amount'] = getBalanceDetails($_SESSION['account_id']);
+		
 		echo $this->load->view( 'home.index', $vars );	
 	}
 
-	private function getBalanceDetails($account_no){
-		$curl = curl_init();
-		$account_no = Sanitizer::sanitize_string(trim( $account_no ));
-		curl_setopt_array($curl, array(
-		  CURLOPT_URL => "https://api.us.apiconnect.ibmcloud.com/ubpapi-dev/sb/api/RESTs/getAccount?account_no=".$account_no,
-		  CURLOPT_RETURNTRANSFER => true,
-		  CURLOPT_ENCODING => "",
-		  CURLOPT_MAXREDIRS => 10,
-		  CURLOPT_TIMEOUT => 30,
-		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		  CURLOPT_CUSTOMREQUEST => "GET",
-		  CURLOPT_SSL_VERIFYHOST => 0,
-		  CURLOPT_SSL_VERIFYPEER => 0,
-		  CURLOPT_HTTPHEADER => array(
-		    "accept: application/json",
-		    "content-type: application/json",
-		    "x-ibm-client-id: bfac49db-0569-412d-925b-263b3e640c4c",
-		    "x-ibm-client-secret: uU0vR1hC1bT6xI3cP1jD3uI1jW6cK0nG0iS4fT6vO8mL2xL6kJ"
-		  ),
-		));
-
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
-
-		curl_close($curl);
-
-		if ($err) {
-		  return "cURL Error #:" . $err;
-		} else {
-		  	$response = json_decode($response);
-		  	if( count($response) < 2 ){
-		  		$response = $response[0];
-		  	}
-		  	return $response;
-		}
-	} 
 }
