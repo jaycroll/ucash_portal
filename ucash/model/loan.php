@@ -38,6 +38,8 @@ class LoanDAO extends baseDAO{
 		  CURLOPT_ENCODING => "",
 		  CURLOPT_MAXREDIRS => 10,
 		  CURLOPT_TIMEOUT => 30,
+		  CURLOPT_SSL_VERIFYHOST => 0,
+		  CURLOPT_SSL_VERIFYPEER => 0,
 		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		  CURLOPT_CUSTOMREQUEST => "GET",
 		  CURLOPT_HTTPHEADER => array(
@@ -58,8 +60,8 @@ class LoanDAO extends baseDAO{
 		} else {
 		  $convertedresults = array();	
 		  $response = json_decode( $response, true);
-			foreach ($reponse as $key => $result) {
-				$resultModel = get_class($model);
+			foreach ($response as $key => $result) {
+				$resultModel = get_class(new Loan);
 
 				$resultObject = new $resultModel;
 				foreach($result as $key => $value){
